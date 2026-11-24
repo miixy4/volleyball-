@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONE ON ONE | Volleyball Tournament</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #080a0e;
+  --panel: #11151c;
+  --panel2: #171c25;
+  --border: #262e3a;
+  --blue: #60a5fa;
+  --blue2: #2563eb;
+  --text: #f1f5f9;
+  --muted: #8994a5;
+  --green: #36d399;
+  --red: #fb7185;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  min-height: 100vh;
+}
+
+button, input { font-family: inherit; }
+
+nav {
+  height: 76px;
+  padding: 0 6%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0b0e13;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 29px;
+  letter-spacing: 4px;
+}
+.brand span { color: var(--blue); }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+.live-label { color: var(--green); font-size: 10px; letter-spacing: 2px; }
+.live-label::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.hero {
+  padding: 75px 6% 55px;
+  background:
+    radial-gradient(ellipse at 80% 20%, #122c4b 0%, transparent 50%),
+    linear-gradient(135deg, #0c111a, #080a0e 70%);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-top {
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(60px, 10vw, 120px);
+  line-height: .9;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+.hero h1 span { color: var(--blue); }
+
+.hero p {
+  margin-top: 22px;
+  color: var(--muted);
+  max-width: 500px;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.stats { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 35px; }
+
+.stat {
+  border: 1px solid var(--border);
+  background: #10151c;
+  padding: 17px 24px;
+  min-width: 125px;
+}
+.stat strong { font-size: 24px; display: block; }
+.stat small {
+  display: block;
+  color: var(--muted);
+  margin-top: 5px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+main { padding: 45px 6%; }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+.section-head h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  letter-spacing: 2px;
+}
+.section-head p { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  padding: 12px 17px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s;
+}
+.btn:hover { border-color: var(--blue); }
+.btn-blue { background: var(--blue2); border-color: var(--blue2); }
+.btn-blue:hover { background: #1d4ed8; }
+.btn-danger { color: var(--red); border-color: #48232c; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.bracket-outer { width: 100%; overflow-x: auto; padding: 15px 0 35px; }
+.bracket { display: flex; gap: 35px; min-width: max-content; align-items: stretch; }
+.round { width: 245px; flex-shrink: 0; display: flex; flex-direction: column; }
+.round-title {
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.round-matches {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-around;
+  gap: 22px;
+}
+.match {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px #0002;
+}
+.match-top {
+  padding: 9px 12px;
+  background: #161b23;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.player {
+  min-height: 47px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #202630;
+}
+.player:last-child { border-bottom: none; }
+.player.winner { color: var(--green); background: #10221d; }
+.player.loser { color: #697483; }
+.player.empty { color: #46505e; font-weight: 400; }
+.player.bye { color: var(--blue); }
+.player-name { overflow-wrap: anywhere; }
+.winner-tag { color: var(--green); font-size: 9px; letter-spacing: 1px; }
+.win-btn {
+  border: 1px solid #2b3544;
+  background: #202a38;
+  color: #dbeafe;
+  border-radius: 4px;
+  padding: 5px 7px;
+  cursor: pointer;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+.win-btn:hover { background: var(--blue2); }
+.win-btn:disabled { display: none; }
+
+.champion {
+  border: 1px solid #275c47;
+  background: linear-gradient(145deg, #10231b, #11151c);
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  margin-top: 35px;
+}
+.champion .trophy { font-size: 30px; margin-bottom: 10px; }
+.champion small { color: var(--green); letter-spacing: 4px; font-size: 10px; }
+.champion h2 { margin-top: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 38px; }
+
+.empty {
+  padding: 65px 20px;
+  text-align: center;
+  border: 1px dashed #303846;
+  background: #0d1117;
+  border-radius: 12px;
+}
+.empty h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; }
+.empty p { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+.admin-toggle {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  background: #172233;
+  border: 1px solid #36577c;
+  color: #b9d7ff;
+  padding: 14px 19px;
+  border-radius: 9px;
+  z-index: 20;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 5px 25px #0007;
+}
+.admin-toggle:hover { background: #223650; }
+
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000a;
+  z-index: 30;
+  display: none;
+}
+.admin-overlay.show { display: block; }
+
+.admin-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: min(440px, 100%);
+  background: #0c1016;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 25px;
+  box-shadow: -15px 0 60px #0007;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 25px;
+}
+.admin-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; }
+.close {
+  background: #1a2029;
+  border: 1px solid var(--border);
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.admin-section { margin-bottom: 28px; }
+.admin-section h3 { font-size: 13px; margin-bottom: 14px; }
+
+.input {
+  width: 100%;
+  padding: 13px;
+  background: #151b23;
+  border: 1px solid #303947;
+  border-radius: 7px;
+  color: white;
+  outline: none;
+  font-size: 13px;
+}
+.input:focus { border-color: var(--blue); }
+
+.admin-actions { display: flex; gap: 10px; margin-top: 12px; }
+.admin-actions .btn { flex: 1; }
+
+.player-list { display: flex; flex-direction: column; gap: 8px; }
+.player-row {
+  background: #151a22;
+  border: 1px solid #252e3a;
+  border-radius: 7px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.remove { background: none; border: none; color: var(--red); cursor: pointer; padding: 4px 8px; }
+
+.admin-note { color: var(--muted); font-size: 11px; line-height: 1.7; margin-top: 10px; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 6%;
+  color: #667080;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+@media(max-width:600px) {
+  nav { padding: 0 5%; }
+  .hero { padding: 55px 5%; }
+  main { padding: 35px 5%; }
+  .section-head { flex-direction: column; align-items: flex-start; }
+  .round { width: 225px; }
+  footer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">ONE <span>ON</span> ONE</div>
+  <div class="nav-right">
+    <div class="live-label">TOURNAMENT</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <div class="hero-top">VOLLEYBALL • SINGLE ELIMINATION</div>
+    <h1>ONE <span>ON</span> ONE.</h1>
+    <p>One player. One opponent. Every match counts.<br>
+    Compete your way through the bracket and become the champion.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="playerCount">0</strong>
+        <small>PLAYERS</small>
+      </div>
+      <div class="stat">
+        <strong id="matchCount">0</strong>
+        <small>MATCHES</small>
+      </div>
+      <div class="stat">
+        <strong id="roundCount">0</strong>
+        <small>ROUNDS</small>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="section-head">
+    <div>
+      <h2>TOURNAMENT BRACKET</h2>
+      <p>Single elimination • 1v1 matches</p>
+    </div>
+    <button class="btn" onclick="scrollBracket()">VIEW BRACKET ↓</button>
+  </div>
+
+  <div id="bracketArea"></div>
+  <div id="championArea"></div>
+</main>
+
+<footer>
+  <div>ONE ON ONE • VOLLEYBALL TOURNAMENT</div>
+  <div>1v1 • SINGLE ELIMINATION</div>
+</footer>
+
+<button class="admin-toggle" onclick="toggleAdmin(true)">⚙ ADMIN DASHBOARD</button>
+
+<div class="admin-overlay" id="adminOverlay" onclick="overlayClose(event)">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>ADMIN DASHBOARD</h2>
+      <button class="close" onclick="toggleAdmin(false)">✕</button>
+    </div>
+
+    <div class="admin-section">
+      <h3>ADD PLAYER</h3>
+      <input class="input" id="playerInput" placeholder="Enter player name..." maxlength="30">
+      <div class="admin-actions">
+        <button class="btn btn-blue" onclick="addPlayer()">+ ADD PLAYER</button>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h3>PLAYERS <span id="adminPlayerCount">(0)</span></h3>
+      <div class="player-list" id="playerList"></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>TOURNAMENT CONTROL</h3>
+      <div class="admin-actions">
+        <button class="btn btn-blue" onclick="generateBracket()">GENERATE BRACKET</button>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn-danger" onclick="resetTournament()">RESET ALL</button>
+      </div>
+      <p class="admin-note">Generating a bracket shuffles players into random matchups. Players left over get a bye into the next round. Reset clears all players and matches.</p>
+    </div>
+
+    <p class="admin-note">Note: This demo stores data in this browser. The admin password is a front-end gate only, and changes aren't shared across devices.</p>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "oneOnOneVolleyballTournamentV1";
+
+let players = [];
+let rounds = [];
+let started = false;
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    players, rounds, started
+  }));
+}
+
+function load() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    players = data.players || [];
+    rounds = data.rounds || [];
+    started = data.started || false;
+  } catch {
+    players = [];
+    rounds = [];
+    started = false;
+  }
+}
+
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  }[c]));
+}
+
+function addPlayer() {
+  const input = document.getElementById("playerInput");
+  const name = input.value.trim();
+
+  if (!name) return alert("Enter a player name first.");
+  if (started) return alert("Reset the tournament to add more players.");
+  if (players.some(p => p.toLowerCase() === name.toLowerCase()))
+    return alert("That player is already on the list.");
+
+  players.push(name);
+  input.value = "";
+  save();
+  render();
+  input.focus();
+}
+
+document.getElementById("playerInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") addPlayer();
+});
+
+function removePlayer(index) {
+  if (started) return alert("Reset the tournament before removing players.");
+  players.splice(index, 1);
+  save();
+  render();
+}
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function generateBracket() {
+  if (players.length < 2) return alert("Add at least 2 players first.");
+
+  if (!confirm("Generate a new bracket and shuffle all players?")) return;
+
+  const shuffled = shuffle(players);
+  const size = Math.pow(2, Math.ceil(Math.log2(shuffled.length)));
+  const totalRounds = Math.log2(size);
+
+  rounds = [];
+  for (let r = 0; r < totalRounds; r++) {
+    const count = size / Math.pow(2, r + 1);
+    rounds.push(Array.from({length: count}, () => ({
+      p1: null, p2: null, winner: null
+    })));
+  }
+
+  rounds[0] = rounds[0].map((match, i) => ({
+    p1: shuffled[i * 2] || null,
+    p2: shuffled[i * 2 + 1] || null,
+    winner: null
+  }));
+
+  started = true;
+  recalculate();
+  save();
+  render();
+  toggleAdmin(false);
+}
+
+function recalculate() {
+  for (let r = 0; r < rounds.length; r++) {
+    if (r > 0) {
+      rounds[r] = rounds[r].map((match, i) => {
+        const previous = rounds[r - 1];
+        const left = previous[i * 2]?.winner || null;
+        const right = previous[i * 2 + 1]?.winner || null;
+        return {
+          p1: left,
+          p2: right,
+          winner: match.winner && (match.winner === left || match.winner === right)
+            ? match.winner
+            : null
+        };
+      });
+    }
+
+    rounds[r] = rounds[r].map(match => {
+      if (!match.p1 && match.p2) return {...match, winner: match.winner || match.p2};
+      if (match.p1 && !match.p2) return {...match, winner: match.winner || match.p1};
+      if (!match.p1 && !match.p2) return {...match, winner: null};
+      return match;
+    });
+  }
+}
+
+function selectWinner(roundIndex, matchIndex, winner) {
+  const match = rounds[roundIndex][matchIndex];
+  if (!match || !match.p1 || !match.p2) return;
+
+  match.winner = winner;
+  // Clear later-round selections, then rebuild progression
+  for (let r = roundIndex + 1; r < rounds.length; r++) {
+    rounds[r].forEach(m => m.winner = null);
+  }
+
+  recalculate();
+  save();
+  render();
+}
+
+function resetTournament() {
+  if (!confirm("Reset everything? This deletes all players and bracket progress.")) return;
+  players = [];
+  rounds = [];
+  started = false;
+  save();
+  render();
+}
+
+function toggleAdmin(open) {
+  // Front-end password gate only. For real security, use server-side authentication.
+  if (open) {
+    const password = prompt("Enter admin password:");
+    if (password !== "loganisref") {
+      alert("Incorrect password.");
+      return;
+    }
+  }
+  document.getElementById("adminOverlay").classList.toggle("show", open);
+}
+
+function overlayClose(e) {
+  if (e.target.id === "adminOverlay") toggleAdmin(false);
+}
+
+function scrollBracket() {
+  document.getElementById("bracketArea").scrollIntoView({behavior:"smooth"});
+}
+
+function getRoundName(index, total) {
+  if (index === total - 1) return "FINAL";
+  if (index === total - 2) return "SEMIFINALS";
+  if (index === total - 3) return "QUARTERFINALS";
+  return "ROUND " + (index + 1);
+}
+
+function matchHTML(match, r, i) {
+  const winner = match.winner;
+
+  function playerHTML(name, side) {
+    if (!name) return `<div class="player empty"><span class="player-name">Waiting...</span></div>`;
+
+    const isWinner = winner === name;
+    const canPick = started && match.p1 && match.p2 && !winner;
+
+    return `<div class="player ${isWinner ? "winner" : (winner ? "loser" : "")}">
+      <span class="player-name">${escapeHTML(name)} ${isWinner ? '<span class="winner-tag">WINNER</span>' : ''}</span>
+      ${canPick ? `<button class="win-btn" onclick="selectWinner(${r},${i},${JSON.stringify(name).replace(/"/g,'&quot;')})">WIN</button>` : ""}
+    </div>`;
+  }
+
+  let status = winner ? "COMPLETED" : "UPCOMING";
+  if (!match.p1 || !match.p2) status = "BYE";
+
+  return `<div class="match">
+    <div class="match-top"><span>MATCH ${i + 1}</span><span>${status}</span></div>
+    ${playerHTML(match.p1)}
+    ${playerHTML(match.p2)}
+  </div>`;
+}
+
+function render()  {
+  document.getElementById("playerCount").textContent = players.length;
+  document.getElementById("adminPlayerCount").textContent = "(" + players.length + ")";
+  document.getElementById("matchCount").textContent = rounds.reduce((sum, r) => sum + r.length, 0);
+  document.getElementById("roundCount").textContent = rounds.length;
+
+  document.getElementById("playerList").innerHTML = players.length
+    ? players.map((p, i) => `<div class="player-row">
+        <span>${escapeHTML(p)}</span>
+        <button class="remove" ${started ? "disabled" : ""} onclick="removePlayer(${i})">REMOVE</button>
+      </div>`).join("")
+    : `<p class="admin-note">No players added yet.</p>`;
+
+  const bracketArea = document.getElementById("bracketArea");
+
+  if (!started || !rounds.length) {
+    bracketArea.innerHTML = `<div class="empty">
+      <h3>BRACKET NOT GENERATED</h3>
+      <p>Open the admin dashboard to add players and generate the tournament.</p>
+    </div>`;
+    document.getElementById("championArea").innerHTML = "";
+    return;
+  }
+
+  bracketArea.innerHTML = `<div class="bracket-outer"><div class="bracket">
+    ${rounds.map((round, r) => `<div class="round">
+      <div class="round-title">${getRoundName(r, rounds.length)}</div>
+      <div class="round-matches">
+        ${round.map((m, i) => matchHTML(m, r, i)).join("")}
+      </div>
+    </div>`).join("")}
+  </div></div>`;
+
+  const finalMatch = rounds[rounds.length - 1][0];
+  const champion = finalMatch?.winner;
+
+  document.getElementById("championArea").innerHTML = champion
+    ? `<div class="champion">
+        <div class="trophy">🏆</div>
+        <small>TOURNAMENT CHAMPION</small>
+        <h2>${escapeHTML(champion)}</h2>
+      </div>`
+    : "";
+}
+
+load();
+recalculate();
+render();
+</script>
+</body>
+</html>
